@@ -17,7 +17,6 @@ let connection = mysql.createConnection({
 connection.connect(err => {
   if (err) throw err;
   console.log(`connected as id ${connection.threadId}`);
-  // run the start function after the connection is made to prompt the user
   startSearch();
 });
 
@@ -69,7 +68,6 @@ const viewProductsForSale = () => {
     console.log('===============================================================================================');
     startSearch();
   });
-  // startSearch();
 }
 // * View Low Inventory
 const viewLowInv = () => {
@@ -130,26 +128,21 @@ const updateInv = () => {
       }
     ])
     .then(answer => {
-      // let query = `UPDATE products SET stock_quantity = ${answer.newinv} WHERE (item_id = ${answer.invid}) `;
       let query = "UPDATE products SET ? WHERE (item_id = ?) ";
 
       connection.query(query,
-       [{stock_quantity: answer.newinv}, answer.invid],
-        //  [answer.newinv, answer.invid ],
-          (err, res, fields) => {
-        if (err) throw err;
-        console.log('===============================================================================================');
-            console.log(res.affectedRows + " stock updated!\n");
-        // console.log(`ID: ${res.item_id} || Name:${res.product_name} || Category: ${res.department_name} || Price: ${res.price} || New Quantity ${res.stock_quantity} `)
-        // console.log(res.product_name);
-
-        console.log('===============================================================================================');
-            startSearch();
-      });
+        [{ stock_quantity: answer.newinv }, answer.invid],
+        (err, res, fields) => {
+          if (err) throw err;
+          console.log('===============================================================================================');
+          console.log(res.affectedRows + " stock quantity updated!\n");
+          console.log('===============================================================================================');
+          startSearch();
+        });
     });
 }
 
-  // * Add New Product
+// * Add New Product
 
 const addNewProduct = () => {
   inquirer
@@ -180,20 +173,17 @@ const addNewProduct = () => {
         message: "What are the sales?"
       }
     ])
-
- .then(answer => {
-  //  let query = `INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales) `;
-  //  query += ` VALUES ("${answer.name}", "${answer.department}", ${answer.price}, ${answer.stock}, ${answer.sales})`;
-   let query = "INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales) ";
-   query += "VALUES (?, ?, ?, ?, ?)" ;
-   connection.query(query,
-     [answer.name, answer.department, answer.price, answer.stock, answer.sales ],
-    (err, res) => {
-     if (err) throw err;
-     console.log('===============================================================================================');
-     console.log(res.affectedRows + " product added!\n");
-     console.log('===============================================================================================');
-     startSearch();
-   });
- })
-}
+    .then(answer => {
+      let query = "INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales) ";
+      query += "VALUES (?, ?, ?, ?, ?)";
+      connection.query(query,
+        [answer.name, answer.department, answer.price, answer.stock, answer.sales],
+        (err, res) => {
+          if (err) throw err;
+          console.log('===============================================================================================');
+          console.log(res.affectedRows + " product added!\n");
+          console.log('===============================================================================================');
+          startSearch();
+        });
+    })
+};
