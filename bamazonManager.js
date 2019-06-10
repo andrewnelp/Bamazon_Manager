@@ -30,7 +30,7 @@ const startSearch = () => {
       choices: [
         "View Products for Sale",
         "View Low Inventory",
-        "Add to Inventory",
+        "Update Inventory",
         "Add New Product"
       ]
     })
@@ -44,12 +44,12 @@ const startSearch = () => {
           viewLowInv();
           break;
 
-        case "Add to Inventory":
-          // addToInv();
+        case "Update Inventory":
+          updateInv();
           break;
 
         case "Add New Product":
-          // addNewProduct();
+          addNewProduct();
           break;
       }
     });
@@ -71,8 +71,8 @@ const viewProductsForSale = () => {
   });
   // startSearch();
 }
-  // * View Low Inventory
-const viewLowInv = () =>{
+// * View Low Inventory
+const viewLowInv = () => {
   inquirer
     .prompt({
       name: "lowinv",
@@ -90,7 +90,7 @@ const viewLowInv = () =>{
       query += `FROM products WHERE item_id = ANY (SELECT item_id FROM products WHERE stock_quantity < ${answer.lowinv}) `;
       query += `ORDER BY stock_quantity ASC`;
       connection.query(query, function (err, res) {
-        if(err) throw err;
+        if (err) throw err;
         console.log('===============================================================================================');
         res.forEach(r => {
           console.log(`ID: ${r.item_id} || Name:${r.product_name} || Category: ${r.department_name} || Price: ${r.price} || Quantity ${r.stock_quantity} `)
@@ -102,7 +102,98 @@ const viewLowInv = () =>{
     });
 }
 
+// * Add to Inventory
+const updateInv = () => {
+  inquirer
+    .prompt(
+      {
+        name: "invid",
+        type: "input",
+        message: "What item id inventory would you like to update?",
+        validate: value => {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      },
+      {
+        name: "newinv",
+        type: "input",
+        message: "How many items would the inventory should be now?",
+        validate: value => {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
+      })
+    .then(answer => {
+      // let query = `UPDATE products SET stock_quantity = ${answer.newinv} WHERE (item_id = ${answer.invid}) `;
+      let query = "UPDATE products SET ? WHERE ? ";
 
-  // * Add to Inventory
+      connection.query(query,
+        { stock_quantity: answer.newinv , item_id: answer.invid},
+        //  [answer.newinv, answer.invid ],
+          (err, res, fields) => {
+        if (err) throw err;
+        console.log('===============================================================================================');
+              console.log(`ID: ${res.item_id}`)
+        // console.log(`ID: ${res.item_id} || Name:${res.product_name} || Category: ${res.department_name} || Price: ${res.price} || New Quantity ${res.stock_quantity} `)
+        // console.log(res.product_name);
+
+        console.log('===============================================================================================');
+       
+      });
+      //  startSearch();
+    });
+}
 
   // * Add New Product
+
+const addNewProduct = () => {
+  inquirer
+    .prompt(
+      {
+        name: "name",
+        type: "input",
+        message: "What product name would like to add?"
+      },
+      {
+        name: "department",
+        type: "input",
+        message: "What is department?",
+      },
+      {
+        name: "price",
+        type: "input",
+        message: "What is the price?"
+      },
+      {
+        name: "stock",
+        type: "input",
+        message: "What is the stock quantity?"
+      },
+      {
+        name: "sales",
+        type: "input",
+        message: "What are the sales?"
+      }
+    )
+
+ .then(answer => {
+  //  let query = `INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales) `;
+  //  query += ` VALUES ("${answer.name}", "${answer.department}", ${answer.price}, ${answer.stock}, ${answer.sales})`;
+   let query = "INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales) ";
+   query += "VALUES (?, ?, ?, ?, ?)" ;
+   connection.query(query,
+     { product_name: answer.name, department_name: answer.department, price: answer.price, stock_quantity: answer.stock, product_sales: answer.sales },
+    (err, res) => {
+     if (err) throw err;
+     console.log('===============================================================================================');
+     console.log(res.affectedRows + " product added!\n");
+     console.log('===============================================================================================');
+     startSearch();
+   });
+ })
+}
