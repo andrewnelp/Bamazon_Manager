@@ -147,6 +147,12 @@ const updateInv = () => {
 const addNewProduct = () => {
   inquirer
     .prompt([
+      // {
+      //   name: "act",
+      //   type: "rawlist",
+      //   message: "Choose a department?",
+      //   choices: viewDeps(newarr)
+      // },
       {
         name: "name",
         type: "input",
@@ -157,6 +163,7 @@ const addNewProduct = () => {
         type: "input",
         message: "What is department?",
       },
+      
       {
         name: "price",
         type: "input",
@@ -187,3 +194,20 @@ const addNewProduct = () => {
         });
     })
 };
+
+// const viewDeps = (a) => {
+//   let arr = [];
+//   let query = "SELECT department_name FROM departments ORDER BY departments.department_name DESC";
+//   connection.query(query, (err, res) => {
+//     if (err) throw err;
+//     res.forEach(r => {
+//       arr.push(r.department_name);
+     
+//     })
+//     let arrSet = new Set(arr)
+//     let newarr = [...arrSet];
+//     console.log(newarr);
+//     return newarr;
+    
+//   })
+// };
