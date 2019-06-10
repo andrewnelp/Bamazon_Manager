@@ -105,7 +105,7 @@ const viewLowInv = () => {
 // * Add to Inventory
 const updateInv = () => {
   inquirer
-    .prompt(
+    .prompt([
       {
         name: "invid",
         type: "input",
@@ -127,25 +127,25 @@ const updateInv = () => {
           }
           return false;
         }
-      })
+      }
+    ])
     .then(answer => {
       // let query = `UPDATE products SET stock_quantity = ${answer.newinv} WHERE (item_id = ${answer.invid}) `;
-      let query = "UPDATE products SET ? WHERE ? ";
+      let query = "UPDATE products SET ? WHERE (item_id = ?) ";
 
       connection.query(query,
-        { stock_quantity: answer.newinv , item_id: answer.invid},
+       [{stock_quantity: answer.newinv}, answer.invid],
         //  [answer.newinv, answer.invid ],
           (err, res, fields) => {
         if (err) throw err;
         console.log('===============================================================================================');
-              console.log(`ID: ${res.item_id}`)
+            console.log(res.affectedRows + " stock updated!\n");
         // console.log(`ID: ${res.item_id} || Name:${res.product_name} || Category: ${res.department_name} || Price: ${res.price} || New Quantity ${res.stock_quantity} `)
         // console.log(res.product_name);
 
         console.log('===============================================================================================');
-       
+            startSearch();
       });
-      //  startSearch();
     });
 }
 
@@ -153,7 +153,7 @@ const updateInv = () => {
 
 const addNewProduct = () => {
   inquirer
-    .prompt(
+    .prompt([
       {
         name: "name",
         type: "input",
@@ -179,7 +179,7 @@ const addNewProduct = () => {
         type: "input",
         message: "What are the sales?"
       }
-    )
+    ])
 
  .then(answer => {
   //  let query = `INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales) `;
@@ -187,7 +187,7 @@ const addNewProduct = () => {
    let query = "INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales) ";
    query += "VALUES (?, ?, ?, ?, ?)" ;
    connection.query(query,
-     { product_name: answer.name, department_name: answer.department, price: answer.price, stock_quantity: answer.stock, product_sales: answer.sales },
+     [answer.name, answer.department, answer.price, answer.stock, answer.sales ],
     (err, res) => {
      if (err) throw err;
      console.log('===============================================================================================');
