@@ -1,5 +1,6 @@
 let mysql = require("mysql");
 let inquirer = require("inquirer");
+const confirm = require('inquirer-confirm')
 
 // create the connection information for the sql database
 let connection = mysql.createConnection({
@@ -145,13 +146,24 @@ const updateInv = () => {
 // * Add New Product
 
 const addNewProduct = () => {
+ 
+  // confirm('Want to see existing deps?')
+  //   .then(function confirmed() {
+  //     // console.log('you are ok');
+  //     viewDeps().then(newarr => console.log(newarr))
+  //     //                       .catch(err => console.log(err))
+  //   }, function cancelled() {
+  //     console.log('sorry to hear that');
+  //   });
+
   inquirer
     .prompt([
       // {
       //   name: "act",
       //   type: "rawlist",
       //   message: "Choose a department?",
-      //   choices: viewDeps(newarr)
+      //   choices: viewDeps().then(newarr => console.log(newarr))
+      //                       .catch(err => console.log(err))
       // },
       {
         name: "name",
@@ -161,7 +173,7 @@ const addNewProduct = () => {
       {
         name: "department",
         type: "input",
-        message: "What is department?",
+        message: "What is department?"
       },
       
       {
@@ -195,19 +207,23 @@ const addNewProduct = () => {
     })
 };
 
-// const viewDeps = (a) => {
-//   let arr = [];
-//   let query = "SELECT department_name FROM departments ORDER BY departments.department_name DESC";
-//   connection.query(query, (err, res) => {
+// const viewDeps = async () => {
+//   let arr = new Array();
+//   let query = "SELECT department_name FROM departments ORDER BY departments.department_name ASC";
+//   await connection.query(query, (err, res) => {
 //     if (err) throw err;
 //     res.forEach(r => {
 //       arr.push(r.department_name);
      
 //     })
+//     //deleting repeated values
 //     let arrSet = new Set(arr)
+//     //converting object to arr
 //     let newarr = [...arrSet];
-//     console.log(newarr);
+//     // console.log(newarr);
 //     return newarr;
-    
 //   })
 // };
+// viewDeps().then(newarr => console.log(newarr))
+// .catch (err => console.log(err));
+// console.log(newarr);
