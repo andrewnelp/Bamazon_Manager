@@ -70,6 +70,7 @@ const viewProductsForSale = () => {
     startSearch();
   });
 }
+
 // * View Low Inventory
 const viewLowInv = () => {
   inquirer
@@ -144,7 +145,6 @@ const updateInv = () => {
 }
 
 // * Add New Product
-
 const addNewProduct = () => {
 
   inquirer
@@ -204,7 +204,7 @@ const viewDeps = () => {
       res.forEach(r => {
         arr.push(r.department_name);
       })
-     resolve(arr)
+      resolve(arr)
     })
   });
 };

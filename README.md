@@ -25,3 +25,12 @@ Amazon like app Manager View Node application called `bamazonManager.js`. Runnin
   * If a manager selects `Add to Inventory`, your app displays a prompt that will let the manager "add more" of any item currently in the store.
 
   * If a manager selects `Add New Product`, it allows the manager to add a completely new product to the store.    
+
+
+## Authors
+
+* **Andrey Nelepov** - *all the work* - [andrewnelp](https://github.com/andrewnelp)
+
+## License
+
+This project is licensed under the ISC License
