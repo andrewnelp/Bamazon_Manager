@@ -213,23 +213,13 @@ const addNewProduct = () => {
 const viewDeps = () => {
   let arr = new Array();
   let query = "SELECT department_name FROM departments ORDER BY departments.department_name ASC";
-  return new Promise((resolve,rej) => {
+  return new Promise((resolve, rej) => {
     connection.query(query, (err, res) => {
       if (err) throw err;
       res.forEach(r => {
         arr.push(r.department_name);
       })
-      // //deleting repeated values
-      // let arrSet = new Set(arr)
-      // //converting object to arr
-      // let newarr = [...arrSet];
-      // console.log(arr);
-      // return arr;
      resolve(arr)
     })
   });
-    
 };
-// viewDeps().then(newarr => console.log(newarr))
-// .catch (err => console.log(err));
-// console.log(newarr);
