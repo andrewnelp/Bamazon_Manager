@@ -158,13 +158,16 @@ const addNewProduct = () => {
 
   inquirer
     .prompt([
-      // {
-      //   name: "act",
-      //   type: "rawlist",
-      //   message: "Choose a department?",
-      //   choices: viewDeps().then(newarr => console.log(newarr))
-      //                       .catch(err => console.log(err))
-      // },
+      {
+        name: "act",
+        type: "rawlist",
+        message: "Choose a department?",
+        choices: async () => {
+          let choices = await viewDeps();
+          console.log(choices)
+          return choices;
+        }
+      },
       {
         name: "name",
         type: "input",
@@ -200,30 +203,33 @@ const addNewProduct = () => {
         (err, res) => {
           if (err) throw err;
           console.log('===============================================================================================');
-          console.log(res.affectedRows + " product added!\n");
+          console.log(res.affectedRows + " product added!");
           console.log('===============================================================================================');
           startSearch();
         });
     })
 };
 
-// const viewDeps = async () => {
-//   let arr = new Array();
-//   let query = "SELECT department_name FROM departments ORDER BY departments.department_name ASC";
-//   await connection.query(query, (err, res) => {
-//     if (err) throw err;
-//     res.forEach(r => {
-//       arr.push(r.department_name);
-     
-//     })
-//     //deleting repeated values
-//     let arrSet = new Set(arr)
-//     //converting object to arr
-//     let newarr = [...arrSet];
-//     // console.log(newarr);
-//     return newarr;
-//   })
-// };
+const viewDeps = () => {
+  let arr = new Array();
+  let query = "SELECT department_name FROM departments ORDER BY departments.department_name ASC";
+  return new Promise((resolve,rej) => {
+    connection.query(query, (err, res) => {
+      if (err) throw err;
+      res.forEach(r => {
+        arr.push(r.department_name);
+      })
+      // //deleting repeated values
+      // let arrSet = new Set(arr)
+      // //converting object to arr
+      // let newarr = [...arrSet];
+      // console.log(arr);
+      // return arr;
+     resolve(arr)
+    })
+  });
+    
+};
 // viewDeps().then(newarr => console.log(newarr))
 // .catch (err => console.log(err));
 // console.log(newarr);
