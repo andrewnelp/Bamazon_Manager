@@ -146,15 +146,6 @@ const updateInv = () => {
 // * Add New Product
 
 const addNewProduct = () => {
- 
-  // confirm('Want to see existing deps?')
-  //   .then(function confirmed() {
-  //     // console.log('you are ok');
-  //     viewDeps().then(newarr => console.log(newarr))
-  //     //                       .catch(err => console.log(err))
-  //   }, function cancelled() {
-  //     console.log('sorry to hear that');
-  //   });
 
   inquirer
     .prompt([
@@ -164,7 +155,7 @@ const addNewProduct = () => {
         message: "Choose a department?",
         choices: async () => {
           let choices = await viewDeps();
-          console.log(choices)
+          // console.log(choices)
           return choices;
         }
       },
@@ -173,12 +164,6 @@ const addNewProduct = () => {
         type: "input",
         message: "What product name would like to add?"
       },
-      {
-        name: "department",
-        type: "input",
-        message: "What is department?"
-      },
-      
       {
         name: "price",
         type: "input",
@@ -199,7 +184,7 @@ const addNewProduct = () => {
       let query = "INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales) ";
       query += "VALUES (?, ?, ?, ?, ?)";
       connection.query(query,
-        [answer.name, answer.department, answer.price, answer.stock, answer.sales],
+        [answer.name, answer.act, answer.price, answer.stock, answer.sales],
         (err, res) => {
           if (err) throw err;
           console.log('===============================================================================================');
