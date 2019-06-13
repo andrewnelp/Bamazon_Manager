@@ -1,6 +1,5 @@
 let mysql = require("mysql");
 let inquirer = require("inquirer");
-const confirm = require('inquirer-confirm')
 
 // create the connection information for the sql database
 let connection = mysql.createConnection({
@@ -155,7 +154,6 @@ const addNewProduct = () => {
         message: "Choose a department?",
         choices: async () => {
           let choices = await viewDeps();
-          // console.log(choices)
           return choices;
         }
       },

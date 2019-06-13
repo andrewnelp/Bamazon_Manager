@@ -1,6 +1,6 @@
 # Bamazon_Manager
 
-** How it works video:** 
+** How it works video:** https://youtu.be/TgiH2lPS9Bw
 
 NPM packages installed:
 * msql
@@ -29,7 +29,7 @@ Amazon like app Manager View Node application called `bamazonManager.js`. Runnin
 
 ## Authors
 
-* **Andrey Nelepov** - *all the work* - [andrewnelp](https://github.com/andrewnelp)
+* **Andrey Nelepov** - *all the work* - [andrewnelp](https://github.com/andrewnelp/Bamazon_Manager)
 
 ## License
 
